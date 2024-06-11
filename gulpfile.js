@@ -24,8 +24,20 @@ function scss() {
     .pipe(gulp.dest("dist/assets/css"));
 }
 
+function img(cb) {
+  // body omitted
+  cb();
+}
+
+function js(cb) {
+  // body omitted
+  cb();
+}
+
 exports.default = function () {
   watch("src/assets/scss/**/*.scss", scss);
+  watch(["src/assets/img/**/*.jpg", "src/assets/img/**/*.png"], img);
+  watch("src/assets/js/**/*.js", js);
 };
 
 exports.build = build;
