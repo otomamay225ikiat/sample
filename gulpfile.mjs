@@ -4,6 +4,12 @@ import gulp from "gulp";
 import dartSass from "sass";
 import gulpSass from "gulp-sass";
 const sass = gulpSass(dartSass);
+
+import { createGulpEsbuild } from "gulp-esbuild";
+const gulpEsbuild = createGulpEsbuild({
+  incremental: true,
+});
+
 import parallel from "gulp";
 
 import imagemin, { gifsicle, mozjpeg, optipng, svgo } from "gulp-imagemin";
@@ -31,9 +37,16 @@ function imgDevelop() {
     .pipe(gulp.dest("dist/assets/img"));
 }
 
-function jsDevelop(cb) {
-  // body omitted
-  cb();
+function jsDevelop() {
+  return gulp
+    .src("src/assets/js/all.js")
+    .pipe(
+      gulpEsbuild({
+        outfile: "bundle.js",
+        bundle: true,
+      }),
+    )
+    .pipe(gulp.dest("dist/assets/js"));
 }
 
 function scssBuild() {
