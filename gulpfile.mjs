@@ -10,6 +10,8 @@ const gulpEsbuild = createGulpEsbuild({
   incremental: true,
 });
 
+import { deleteSync } from "del";
+
 import parallel from "gulp";
 
 import imagemin, { gifsicle, mozjpeg, optipng, svgo } from "gulp-imagemin";
@@ -18,10 +20,6 @@ import { watch } from "gulp";
 
 function clean(cb) {
   cb();
-}
-
-function build() {
-  return gulp.parallel([scssBuild, imgBuild, jsBuild]);
 }
 
 function scssDevelop() {
@@ -86,10 +84,18 @@ function jsBuild(cb) {
   cb();
 }
 
+function distDelete() {
+  deleteSync(["dist/**/*"]);
+}
+
 function develop() {
   watch("src/assets/scss/**/*.scss", scssDevelop);
   watch("src/assets/img/**/*.*", imgDevelop);
   watch("src/assets/js/**/*.js", jsDevelop);
+}
+
+function build() {
+  distDelete();
 }
 
 export default develop;
