@@ -18,8 +18,22 @@ import { watch } from "gulp";
 
 import browserSync from "browser-sync";
 
+import pug from "gulp-pug";
+
 function clean(cb) {
   cb();
+}
+
+function pugDevelop() {
+  return gulp
+    .src(["src/**/*.pug", "!src/**/_*.pug"])
+    .pipe(
+      pug({
+        basedir: "src",
+        doctype: "html",
+      }),
+    )
+    .pipe(gulp.dest("dist/"));
 }
 
 function scssDevelop() {
@@ -45,6 +59,18 @@ function jsDevelop() {
       }),
     )
     .pipe(gulp.dest("dist/assets/js"));
+}
+
+function pugBuild() {
+  return gulp
+    .src(["src/**/*.pug", "!src/**/_*.pug"])
+    .pipe(
+      pug({
+        basedir: "src",
+        doctype: "html",
+      }),
+    )
+    .pipe(gulp.dest("dist/"));
 }
 
 function scssBuild() {
@@ -111,6 +137,7 @@ function browsersync(done) {
 }
 
 function watcher() {
+  watch("src/**/*.pug", pugDevelop);
   watch("src/assets/scss/**/*.scss", scssDevelop);
   watch("src/assets/img/**/*.*", imgDevelop);
   watch("src/assets/js/**/*.js", jsDevelop);
@@ -119,12 +146,22 @@ function watcher() {
 function develop(done) {
   gulp.series(
     distDelete,
-    gulp.parallel(scssDevelop, imgDevelop, jsDevelop, browsersync, watcher),
+    gulp.parallel(
+      pugDevelop,
+      scssDevelop,
+      imgDevelop,
+      jsDevelop,
+      browsersync,
+      watcher,
+    ),
   )(done);
 }
 
 function build(done) {
-  gulp.series(distDelete, gulp.parallel(scssBuild, imgBuild, jsBuild))(done);
+  gulp.series(
+    distDelete,
+    gulp.parallel(pugBuild, scssBuild, imgBuild, jsBuild),
+  )(done);
 }
 
 export default develop;

@@ -15,6 +15,7 @@
     "gulp": "^5.0.0",
     "gulp-esbuild": "^0.12.1",
     "gulp-imagemin": "^9.1.0",
+    "gulp-pug": "^5.0.0",
     "gulp-sass": "^5.1.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.5",
