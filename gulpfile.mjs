@@ -33,20 +33,23 @@ function pugDevelop() {
         doctype: "html",
       }),
     )
-    .pipe(gulp.dest("dist/"));
+    .pipe(gulp.dest("dist/"))
+    .pipe(browserSync.stream());
 }
 
 function scssDevelop() {
   return gulp
     .src("src/assets/scss/**/*.scss")
     .pipe(sass().on("error", sass.logError))
-    .pipe(gulp.dest("dist/assets/css"));
+    .pipe(gulp.dest("dist/assets/css"))
+    .pipe(browserSync.stream());
 }
 
 function imgDevelop() {
   return gulp
     .src("src/assets/img/*", { encoding: false })
-    .pipe(gulp.dest("dist/assets/img"));
+    .pipe(gulp.dest("dist/assets/img"))
+    .pipe(browserSync.stream());
 }
 
 function jsDevelop() {
@@ -58,7 +61,8 @@ function jsDevelop() {
         bundle: true,
       }),
     )
-    .pipe(gulp.dest("dist/assets/js"));
+    .pipe(gulp.dest("dist/assets/js"))
+    .pipe(browserSync.stream());
 }
 
 function pugBuild() {
