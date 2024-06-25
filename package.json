@@ -10,6 +10,7 @@
   "author": "otomamay225ikiat",
   "license": "ISC",
   "devDependencies": {
+    "browser-sync": "^3.0.2",
     "del": "^7.1.0",
     "gulp": "^5.0.0",
     "gulp-esbuild": "^0.12.1",

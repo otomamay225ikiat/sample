@@ -16,6 +16,8 @@ import imagemin, { gifsicle, mozjpeg, optipng, svgo } from "gulp-imagemin";
 
 import { watch } from "gulp";
 
+import browserSync from "browser-sync";
+
 function clean(cb) {
   cb();
 }
@@ -99,10 +101,26 @@ function distDelete(cb) {
   cb();
 }
 
-function develop() {
+function browsersync(done) {
+  browserSync.init({
+    server: {
+      baseDir: "dist",
+    },
+  });
+  done();
+}
+
+function watcher() {
   watch("src/assets/scss/**/*.scss", scssDevelop);
   watch("src/assets/img/**/*.*", imgDevelop);
   watch("src/assets/js/**/*.js", jsDevelop);
+}
+
+function develop(done) {
+  gulp.series(
+    distDelete,
+    gulp.parallel(scssDevelop, imgDevelop, jsDevelop, browsersync, watcher),
+  )(done);
 }
 
 function build(done) {
