@@ -48,7 +48,11 @@ function jsDevelop() {
 function scssBuild() {
   return gulp
     .src("src/assets/scss/**/*.scss")
-    .pipe(sass().on("error", sass.logError))
+    .pipe(
+      sass({
+        outputStyle: "compressed",
+      }).on("error", sass.logError),
+    )
     .pipe(gulp.dest("dist/assets/css"));
 }
 
@@ -77,9 +81,17 @@ function imgBuild() {
     .pipe(gulp.dest("dist/assets/img"));
 }
 
-function jsBuild(cb) {
-  // body omitted
-  cb();
+function jsBuild() {
+  return gulp
+    .src("src/assets/js/all.js")
+    .pipe(
+      gulpEsbuild({
+        outfile: "bundle.js",
+        bundle: true,
+        minify: true,
+      }),
+    )
+    .pipe(gulp.dest("dist/assets/js"));
 }
 
 function distDelete(cb) {
