@@ -5,8 +5,10 @@ import * as dartSass from "sass";
 import gulpSass from "gulp-sass";
 const sass = gulpSass(dartSass);
 
+import gulpEsbuild from "gulp-esbuild";
 import { createGulpEsbuild } from "gulp-esbuild";
-const gulpEsbuild = createGulpEsbuild({
+
+const incrementalGulpEsbuild = createGulpEsbuild({
   incremental: true,
 });
 
@@ -56,7 +58,7 @@ function jsDevelop() {
   return gulp
     .src("src/assets/js/all.js")
     .pipe(
-      gulpEsbuild({
+      incrementalGulpEsbuild({
         outfile: "bundle.js",
         bundle: true,
       }),
